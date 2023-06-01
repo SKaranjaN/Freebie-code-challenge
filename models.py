@@ -18,6 +18,15 @@ class Company(Base):
 
     def __repr__(self):
         return f'<Company id={self.id}, {self.name}>'
+    
+    def give_freebie(self, dev, item_name, value):
+        freebie = Freebie(item_name=item_name, value=value, company=self, dev=dev)
+        self.freebies.append(freebie)
+        dev.freebies.append(freebie)
+
+    @classmethod
+    def oldest_company(cls):
+        return session.query(cls).order_by(cls.founding_year).first()
 
 
 class Dev(Base):
